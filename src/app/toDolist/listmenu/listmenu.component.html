@@ -17,12 +17,12 @@
                     <ul class="list-group" *ngFor="let item of todos.listItems; let i = index;">
                     <li class="list-group-item clearfix">
                         <h5 class="header">
-                                <label *ngIf="this.editable"><input id="editText{{i}}" name="editText" type="text" value="{{item.text}}"></label>
-                            <label *ngIf="!this.editable">{{item.text}}</label>
-                                <span class="pull-right button-group">
+                                <label *ngIf="item.edit"><input id="editText{{i}}" name="editText" type="text" value="{{item.text}}"></label>
+                            <label *ngIf="!item.edit">{{item.text}}</label>
+                                <span class="pull-right button-group ">
                                     <button type="button" class="btn btn-warning" (click) = "itemDone(i)" data-toggle="tooltip" title="Mark as Done"><i class="fa fa-check" aria-hidden="true"></i></button>   
                                     <button type="button" class="btn btn-primary " (click) = "editList(i)" data-toggle="tooltip" title="Edit"><i class="fa fa-edit" aria-hidden="true"></i></button> 
-                                    <button type="button" class="btn btn-danger" (click) = deleteItem(i) data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                    <button type="button" class="btn btn-danger" (click) = "deleteItem(i,item.text)" data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                 </span>
                             </h5>
                     </li>
@@ -32,21 +32,26 @@
                 <hr>
                 <div *ngIf="todos.listItems && todos.listItems.length !=0">
                 <div class="todo-footer">
-                    <strong><span class="count-todos"></span></strong> Items Left {{todos.listItems.length}}
+                    <strong><span class="count-todos">Items Left: {{todos.listItems.length}}</span> </strong>
                 </div>
             </div>
             </div>
         </div>
         
-        <div class="col-md-6 text-center mt-5">
+        <div class="col-md-6 text-center mt-5 ">
             <div>
-             <h3>Already Done</h3>
+             <h3 class="ml-4">Already Done</h3>
              <hr/>
                 <ul *ngFor="let item of newTodo">
-                    <h5><li class="ml-auto pull-right "><del>{{item[0].text}}</del></li></h5>
+                    <h5><li class="ml-auto pull-right "><del>{{item.text}}</del></li></h5><br/>
                     
                 </ul>
             </div>
         </div>
     </div>
+    <br/><br/><br/><br/><hr/>
+    <button id="addList" (click)="clearAll()" class="btn btn-danger mt-5  mr-4 center">Clear All</button>   
+    <button id="addList" (click)="clearActiveItems()" class="btn btn-danger mt-5 mr-4 center">Clear Active Items</button>   
+    <button id="addList" (click)="clearDoneItems()" class="btn btn-danger mt-5 mr-4 center">Clear Done items</button>  
 </div>
+

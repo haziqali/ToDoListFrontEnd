@@ -26,6 +26,52 @@ export class TodoService {
   return this.http.post(`${this.url}/lists/addItem`, params);
   }
 
+  removeToDoList(listItem) : Observable<any>{
+    const params = new HttpParams()
+    .set('authToken', Cookie.get('authtoken'))
+    .set('listName', Cookie.get('listName'))
+    .set('listItems', listItem)
+  return this.http.post(`${this.url}/lists/deleteItem`, params);
+  }
+
+  doneItemToDoList(listItem) : Observable<any>{
+    const params = new HttpParams()
+    .set('authToken', Cookie.get('authtoken'))
+    .set('listName', Cookie.get('listName'))
+    .set('listItems', listItem)
+  return this.http.post(`${this.url}/lists/doneItem`, params);
+  }
+
+  clearAll() : Observable<any>{
+    const params = new HttpParams()
+    .set('authToken', Cookie.get('authtoken'))
+    .set('listName', Cookie.get('listName'))
+  return this.http.post(`${this.url}/lists/clearAll`, params);
+  }
+
+  clearDoneItems() : Observable<any>{
+    const params = new HttpParams()
+    .set('authToken', Cookie.get('authtoken'))
+    .set('listName', Cookie.get('listName'))
+  return this.http.post(`${this.url}/lists/clearDoneItems`, params);
+  }
+
+  clearActiveItems() : Observable<any>{
+    const params = new HttpParams()
+    .set('authToken', Cookie.get('authtoken'))
+    .set('listName', Cookie.get('listName'))
+  return this.http.post(`${this.url}/lists/clearActiveItems`, params);
+  }
+
+  editListItem(oldValue, newValue) : Observable<any>{
+    const params = new HttpParams()
+    .set('authToken', Cookie.get('authtoken'))
+    .set('listName', Cookie.get('listName'))
+    .set('oldValue', oldValue)
+    .set('newValue', newValue)
+  return this.http.post(`${this.url}/lists/editItem`, params);
+  }
+
   getSingleToDoList(listName) : Observable<any>{
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))

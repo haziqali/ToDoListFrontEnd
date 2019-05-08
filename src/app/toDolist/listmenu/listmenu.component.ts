@@ -13,33 +13,78 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 export class ListMenuComponent implements OnInit {
   
-   
-
-  ngOnInit(): void {
-    this.todos =  this.todoService.getSingleToDoList(this.route.snapshot.params["listName"])
-    .subscribe((apiResponse) => {
-      if (apiResponse.status === 200) {
-        this.todos = apiResponse.data;
-        console.log(this.todos);
-        Cookie.set("listName", this.todos.name);
-      } else {
-
-        this.toastr.error(apiResponse.message)
-      }
-    }, (err) => {
-      this.toastr.error('some error occured')
-    });
-}
-
   newTodo: any[] = [];
-    todos: any;
-    todoObj: any;
-    editable: boolean = false;
+  todos: any;
+  todoObj: any;
+  editable: boolean = false;
 
   constructor(private todoService: TodoService, private route: ActivatedRoute, private toastr: ToastrService) {
-} // end condition
+  }
 
-  
+  ngOnInit(): void {
+    this.getSingleToDoList();
+}
+
+ 
+getSingleToDoList() {
+  this.todos =  this.todoService.getSingleToDoList(this.route.snapshot.params["listName"])
+  .subscribe((apiResponse) => {
+    if (apiResponse.status === 200) {
+      console.log(apiResponse)
+      this.todos = apiResponse.data;
+      this.newTodo = this.todos.doneListItems;
+      Cookie.set("listName", this.todos.name);
+    } else {
+
+      this.toastr.error(apiResponse.message)
+    }
+  }, (err) => {
+    this.toastr.error('some error occured')
+  });
+}
+
+clearAll() {
+  this.todoService.clearAll()
+  .subscribe((apiResponse) => {
+    if (apiResponse.status === 200) {
+      this.getSingleToDoList();
+    } else {
+
+      this.toastr.error(apiResponse.message)
+    }
+  }, (err) => {
+    this.toastr.error('some error occured')
+  });
+}
+
+clearActiveItems() {
+  this.todoService.clearActiveItems()
+  .subscribe((apiResponse) => {
+    if (apiResponse.status === 200) {
+      this.getSingleToDoList();
+    } else {
+
+      this.toastr.error(apiResponse.message)
+    }
+  }, (err) => {
+    this.toastr.error('some error occured')
+  });
+}
+
+clearDoneItems() {
+  this.todoService.clearDoneItems()
+  .subscribe((apiResponse) => {
+    if (apiResponse.status === 200) {
+      this.getSingleToDoList();
+    } else {
+
+      this.toastr.error(apiResponse.message)
+    }
+  }, (err) => {
+    this.toastr.error('some error occured')
+  });
+}
+
 
 addtoList(value) {
   console.log(value);
@@ -47,7 +92,7 @@ addtoList(value) {
    .subscribe((apiResponse) => {
     if (apiResponse.status === 200) {
       this.toastr.success(apiResponse.message)
-      this.todos.listItems.push({text: value});
+      this.todos.listItems.push( {text:value, edit: false});
     } else {
 
       this.toastr.error(apiResponse.message)
@@ -59,28 +104,62 @@ addtoList(value) {
 
 itemDone(index) {
   const value = this.todos.listItems[index].text;
-    var lists = this.todos.listItems.filter(x => {
-      return x.text == value;
-    });
-    this.newTodo.push(lists);
-    this.deleteItem(index);
+  this.todoService.doneItemToDoList(value)
+  .subscribe((apiResponse) => {
+    if (apiResponse.status === 200) {
+      this.toastr.success(apiResponse.message);
+      this.getSingleToDoList();
+    } else {
+      this.toastr.error(apiResponse.message)
+    }
+  }, (err) => {
+    this.toastr.error('some error occured')
+  });
  
 }
+  
 
 editList(index) {
 
-  this.editable = !this.editable;
-  if(this.editable == true) {
+  this.todos.listItems[index].edit = !this.todos.listItems[index].edit;
+  if(this.todos.listItems[index].edit  === true) {
     return;
   }
   else{
-    this.todos.listItems[index].text = (<HTMLInputElement>document.getElementById("editText"+index)).value;
+    const oldValue= this.todos.listItems[index].text;
+    const newValue = (<HTMLInputElement>document.getElementById("editText"+index)).value;
+    console.log(newValue);
+    console.log(oldValue);
+    this.todoService.editListItem(oldValue, newValue)
+    .subscribe((apiResponse) => {
+      console.log(apiResponse)
+      if (apiResponse.status === 200) {
+       
+        this.toastr.success(apiResponse.message);  
+      } else {
+        this.toastr.error(apiResponse.message)
+      }
+    }, (err) => {
+      this.toastr.error('some error occured')
+    });
   }
 }
 
-  deleteItem(index) {
-    console.log(index);
-    this.todos.listItems.splice(index, 1);
+  deleteItem(index, listItem) {
+    this.todoService.removeToDoList(listItem)
+    .subscribe((apiResponse) => {
+      if (apiResponse.status === 200) {
+        console.log(apiResponse);
+        this.toastr.success(apiResponse.message);
+        this.todos.listItems.splice(index, 1);
+      } else {
+  
+        this.toastr.error(apiResponse.message)
+      }
+    }, (err) => {
+      this.toastr.error('some error occured')
+    });
+   
   }
 
 }

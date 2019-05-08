@@ -12,6 +12,7 @@
 
   <div class="mx-auto col-6 text-center mt-5">
       <h2>All My To Do Lists</h2>
+      <p *ngIf="!todos">There are no lists to display.</p>
   <div class="list-group " *ngFor="let todo of todos">
       <button type="button" class="list-group-item list-group-item-action" routerLink = "/list-detail/{{todo.name}}">
           {{todo.name}}
