@@ -1,0 +1,58 @@
+<div class="container">
+  <br/>
+<div class="row justify-content-center">
+                      <div class="col-12 col-md-10 col-lg-8">
+                          <h3 class="text-center mb-3">Search for a friend</h3>
+                          <form #myForm="ngForm" class="card card-sm" >
+                              <div class="card-body row no-gutters align-items-center">
+                                  <div class="col-auto">
+                                    <i class="fa fa-search fa-2x" aria-hidden="true"></i>
+                                  </div>
+                                  <!--end of col-->
+                                  <div class="col">
+                                      <input name="email" #email="ngModel"  required
+                                      pattern="[^ @]*@[^ @]*" [(ngModel)]="name" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Enter email id">
+                                  </div>
+                                  <!--end of col-->
+                                  <div class="col-auto">
+                                      <button [disabled] = "myForm.invalid"  type="submit" class="btn btn-lg btn-success" (click)="searchFriend(myForm)">Search</button>
+                                  </div>
+                                  <!--end of col-->
+                              </div>
+                              <div style="color:red" *ngIf="myForm.invalid && (myForm.touched)">Please enter a valid email id</div>
+                          </form>
+                      </div>
+                      
+                      <!--end of col-->
+                  </div>
+               
+</div>
+
+
+
+
+
+  <div class="list-content" mt-5 *ngIf="receiverName">
+    <ul class="list-group">
+      <li href="#" class="list-group-item title">
+        Search Result
+      </li>
+      
+      <li class="list-group-item text-left mt-4">
+          
+        <label class="name">
+         <h4>{{receiverName.firstName}} {{receiverName.lastName}}</h4> 
+        </label><br>
+        <label class="email">
+            <h5>{{receiverName.email}} </h5> 
+           </label>
+        <label class="pull-right">
+            <a  class="btn btn-success" href="javascript:void(0)" (click)="sendFriendRequest()" title="Send Friend Request">Send Friend Request</a>
+            <a  class="btn btn-danger" href="javascript:void(0)" (click)="receiverName=''" title="Cancel">Cancel</a>
+        </label>
+        <div class="break"></div>
+      </li>
+     
+    </ul>
+  </div>
+                                                                                
