@@ -34,28 +34,91 @@ export class FriendListComponent implements OnInit {
 
   ngOnInit() {
 
-
-    this.userInfo = this.AppService.getUserInfoFromLocalstorage();
-
+    this.authToken = Cookie.get("authtoken");
+    this.getUserInfo();
+  
     this.verifyUserConfirmation();
 
     this.getOnlineUserList();
 
     this.newUserOnline();
 
+    this.friendRequestSent();
+
+    this.friendRequestAcceptedResp();
 
 
+
+  }
+
+  getUserInfo() {
+    this.AppService.getSingleUser(this.AppService.getUserInfoFromLocalstorage().email)
+    .subscribe((apiResponse) => {
+      if (apiResponse.status === 200) {
+        console.log(apiResponse);
+        this.userInfo = apiResponse.data;
+      } else {
+        this.toastr.error(apiResponse.message)
+      }
+    }, (err) => {
+      this.toastr.error('some error occured')
+    });
   }
 
 sendFriendRequest() {
     let data = {
-      senderEmail : this.userInfo.email,
-      receiverEmail: this.receiverName.email
+      senderMail : this.userInfo.email,
+      senderFirstName: this.userInfo.firstName,
+      senderLastname: this.userInfo.lastName,
+      receiverMail: this.receiverName.email,
+
     }
-    console.log(data);
+    const foundReq = this.userInfo.friendRequests.some(el => el.email === data.receiverMail);
+    const foundFr = this.userInfo.friends.some(el => el.email === data.receiverMail);
+    if(foundReq) {
+      this.toastr.error("Friend Request already sent")
+    }
+    else if(foundFr) {
+      this.toastr.error("User is already in your friend list")
+    }
+    else{
+    this.SocketService.sendFriendRequest(data, this.authToken);
+    }
   }
 
+  acceptFriendRequest(reciever) {
+    let data = {
+      senderMail : this.userInfo.email,
+      senderFirstName: this.userInfo.firstName,
+      senderLastname: this.userInfo.lastName,
+      receiverMail: reciever.email,
+      receiverFirstName: reciever.firstName,
+      receiverLastname: reciever.lastName,
 
+    }
+    console.log(data);
+    this.SocketService.friendRequestAccepted(data);
+  }
+
+  public friendRequestSent: any = () => {
+
+    this.SocketService.friendRequestSent()
+      .subscribe((msg) => {
+        this.toastr.success(msg);
+        this.receiverName = "";
+
+      });
+    }
+
+
+    public friendRequestAcceptedResp: any = () => {
+
+      this.SocketService.friendRequestAcceptedResponse()
+        .subscribe((msg) => {
+          this.toastr.success(msg);
+          this.getUserInfo();
+        });
+      }
 
 searchFriend(form: NgForm) {
   
@@ -82,21 +145,21 @@ searchFriend(form: NgForm) {
 } // end condition
 
 
+public verifyUserConfirmation: any = () => {
+
+  this.SocketService.verifyUser()
+    .subscribe((data) => {
+
+      this.disconnectedSocket = false;
+
+      this.SocketService.setUser(this.authToken);
+      this.getOnlineUserList();
+
+    });
+  }
 
 
-
-  public verifyUserConfirmation: any = () => {
-
-    this.SocketService.verifyUser()
-      .subscribe((data) => {
-
-        this.disconnectedSocket = false;
   
-        this.SocketService.setUser(Cookie.get("authtoken"));
-        this.getOnlineUserList();
-
-      });
-    }
 
     public newUserOnline: any = () => {
       this.SocketService.newUserOnline()
@@ -110,13 +173,9 @@ searchFriend(form: NgForm) {
 
     this.SocketService.onlineUserList()
       .subscribe((userList) => {
-
         this.userList = [];
-
         for (let x in userList) {
-
           let temp = { 'userId': x, 'name': userList[x], 'unread': 0, 'chatting': false };
-
           this.userList.push(temp);          
 
         }
@@ -125,14 +184,5 @@ searchFriend(form: NgForm) {
 
       }); // end online-user-list
   }
-
-
-    
-
-
-
-
-
-
 
   }

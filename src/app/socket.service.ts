@@ -11,6 +11,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/toPromise';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { AppService } from './app.service';
 
 @Injectable()
 export class SocketService {
@@ -20,7 +21,7 @@ export class SocketService {
   private socket;
 
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public appService: AppService) {
     // connection is being created.
     // that handshake
     this.socket = io(this.url);
@@ -72,14 +73,38 @@ export class SocketService {
 
   }
 
+  public friendRequestSent = () => {
 
-  public disconnectedSocket = () => {
+    return Observable.create((observer) => {
+      this.socket.on(`${this.appService.getUserInfoFromLocalstorage().email}-friend-request-sent`, (message) => {
+        observer.next(message);
+
+      });
+
+    });
+
+  }
+
+  public friendRequestAcceptedResponse = () => {
+
+    return Observable.create((observer) => {
+      this.socket.on(`${this.appService.getUserInfoFromLocalstorage().email}-friend-request-accepted-db`, (message) => {
+        observer.next(message);
+
+      });
+
+    });
+
+  }
+
+
+  public disconnectedSocket = (data) => {
 
     return Observable.create((observer) => {
 
-      this.socket.on("disconnect", () => {
+      this.socket.on(`${data.senderMail}-friend-request-sent`, (message) => {
 
-        observer.next();
+        observer.next(message);
 
       }); // end Socket
 
@@ -99,7 +124,15 @@ export class SocketService {
   } // end setUser
 
   // events to be emitted
+  public sendFriendRequest = (data, authToken) => {
+    this.socket.emit("friend-request", data, authToken);
 
+  }
+
+  public friendRequestAccepted = (data) => {
+    this.socket.emit("friend-request-accepted", data);
+
+  }
 
   private handleError(err: HttpErrorResponse) {
 

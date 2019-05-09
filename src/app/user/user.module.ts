@@ -19,6 +19,7 @@ import { LogoutComponent } from './logout/logout.component';
     ToastrModule.forRoot(),
     RouterModule.forChild([
       { path: 'sign-up', component: SignupComponent },
+      { path: 'login', component: LoginComponent, pathMatch: 'full' },
       { path: 'forgotpassword', component: ForgotPasswordComponent},
       { path: 'resetpassword/:token', component: ResetPasswordComponent},
       {path: 'logout', component: LogoutComponent}

@@ -14,8 +14,10 @@
             <br/><br/>
                     <h3>Open items</h3><div *ngIf="todos.listItems && todos.listItems.length !=0"><hr/></div>
 
-                    <ul class="list-group" *ngFor="let item of todos.listItems; let i = index;">
-                    <li class="list-group-item clearfix">
+                    <table class="table table-striped">
+                    <tbody>
+                        <tr *ngFor="let item of todos.listItems; let i = index;">
+                        <td class="list-group-item clearfix">
                         <h5 class="header">
                                 <label *ngIf="item.edit"><input id="editText{{i}}" name="editText" type="text" value="{{item.text}}"></label>
                             <label *ngIf="!item.edit">{{item.text}}</label>
@@ -25,9 +27,11 @@
                                     <button type="button" class="btn btn-danger" (click) = "deleteItem(i,item.text)" data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                 </span>
                             </h5>
-                    </li>
-                    
-                </ul>
+                        
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
 
                 <hr>
                 <div *ngIf="todos.listItems && todos.listItems.length !=0">

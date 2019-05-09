@@ -2,7 +2,8 @@
     min-height:300px;
    }
    .list-content .list-group .title{
-     background:#5bc0de;
+     background:darkslategrey;
+     color: antiquewhite;
      border:2px solid #DDDDDD;
      font-weight:bold;
      color:#FFFFFF;

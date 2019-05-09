@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,6 +18,7 @@ export class ResetPasswordComponent implements OnInit {
 
 
   constructor(private activatedRoute : ActivatedRoute, 
+              private router: Router,
               private appService : AppService,
               private toastr: ToastrService ) { }
 
@@ -43,8 +44,8 @@ export class ResetPasswordComponent implements OnInit {
     .subscribe((apiResponse) => {
 
       if (apiResponse.status === 200) {
-        console.log(apiResponse);
         this.toastr.success(apiResponse.message);
+        this.router.navigate(['/login']);
 
 
       } else {

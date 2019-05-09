@@ -134,7 +134,7 @@ editList(index) {
     .subscribe((apiResponse) => {
       console.log(apiResponse)
       if (apiResponse.status === 200) {
-       
+       this.getSingleToDoList();
         this.toastr.success(apiResponse.message);  
       } else {
         this.toastr.error(apiResponse.message)
