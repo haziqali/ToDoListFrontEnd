@@ -14,15 +14,18 @@ import { SocketService } from 'src/app/socket.service';
 })
 export class ListMenuComponent implements OnInit {
   
-  newTodo: any[] = [];
-  todos: any;
-  todoObj: any;
-  editable: boolean = false;
+  private newTodo: any[] = [];
+  private todos: any;
+  private todoObj: any;
+  private editable: boolean = false;
+  private result: any;
+  private user: any;
 
   constructor(private todoService: TodoService, private route: ActivatedRoute, private toastr: ToastrService, private socketService: SocketService) {
   }
 
   ngOnInit(): void {
+    
     this.getSingleToDoList();
     this.listItemAdded();
     this.listItemDeleted();
@@ -31,41 +34,66 @@ export class ListMenuComponent implements OnInit {
     this.listItemCleared();
 }
 
+checkListPermission() {
+  this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
+  this.user = JSON.parse(localStorage.getItem("userInfo")).email;
+  if(this.result.includes(this.user)) {
+    return true;
+  }
+  return false;
+}
+g() {
+  console.log(1)
+}
 public listItemAdded: any = () => {
+  
+  if(this.checkListPermission()) {
   this.socketService.listItemAdded()
     .subscribe((msg) => {
       this.toastr.success(msg);
       this.getSingleToDoList();
     });
   }
+}
+
   public listItemDeleted: any = () => {
+    if(this.checkListPermission()) {
     this.socketService.listItemDeleted()
       .subscribe((msg) => {
         this.toastr.success(msg);
         this.getSingleToDoList();
       });
     }
+  }
+
     public listItemEdited: any = () => {
+      if(this.checkListPermission()) {
       this.socketService.listItemedited()
         .subscribe((msg) => {
           this.toastr.success(msg);
           this.getSingleToDoList();
         });
       }
+    }
+
       public listItemCompleted: any = () => {
+        if(this.checkListPermission()) {
         this.socketService.listItemCompleted()
           .subscribe((msg) => {
             this.toastr.success(msg);
             this.getSingleToDoList();
           });
         }
+      }
         public listItemCleared: any = () => {
+          if(this.checkListPermission()) {
           this.socketService.listItemCleared()
             .subscribe((msg) => {
               this.toastr.success(msg);
               this.getSingleToDoList();
             });
           }
+        }
  
 getSingleToDoList() {
   this.todos =  this.todoService.getSingleToDoList(this.route.snapshot.params["listName"])
@@ -144,7 +172,6 @@ clearDoneItems() {
 
 
 addtoList(value) {
-  console.log(value);
    this.todoService.addToDoList(value)
    .subscribe((apiResponse) => {
     if (apiResponse.status === 200) {

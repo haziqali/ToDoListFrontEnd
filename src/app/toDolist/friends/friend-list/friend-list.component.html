@@ -47,10 +47,10 @@
             <h5>{{receiverName.email}} </h5> 
            </label>
         <label class="pull-right">
-            <a  class="btn btn-success" href="javascript:void(0)" (click)="sendFriendRequest()" title="Send Friend Request">Send Friend Request</a>
+            <a  class="btn btn-success" href="javascript:void(0)" (click)="sendFriendRequest()" title="Send Friend Request">*Send Friend Request</a>
             <a  class="btn btn-danger" href="javascript:void(0)" (click)="receiverName=''" title="Cancel">Cancel</a>
         </label>
-        <div class="break"></div>
+        <div class="break">*user needs to be online for friend request to be successfully sent</div>
       </li>
      
     </ul>
@@ -101,3 +101,8 @@
                   
                  </ul>
                </div>
+
+               
+               <hr/>
+                 
+              

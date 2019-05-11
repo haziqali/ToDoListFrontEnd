@@ -73,14 +73,24 @@ export class SocketService {
 
 
   public disconnectedSocket = () => {
+
     return Observable.create((observer) => {
-      this.socket.on("new-user-online", (message) => {
-        observer.next(message);
+
+      this.socket.on("disconnect", () => {
+
+        observer.next();
+
       }); // end Socket
+
     }); // end Observable
-  } // end disconnectSocket
-  // end events to be listened
-  // events to be emitted
+
+
+
+  }
+
+  public exitSocket = () =>{
+    this.socket.disconnect();
+  }
 
   public setUser = (authToken) => {
     console.log(authToken)

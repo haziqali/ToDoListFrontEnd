@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChatBoxComponent } from './chat/chat-box.component';
 import { RouterModule, Routes } from '@angular/router';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -19,12 +18,12 @@ import { FriendListComponent } from './friends/friend-list/friend-list.component
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     RouterModule.forChild([ 
-      { path: 'chat', component: ChatBoxComponent, canActivate: [AuthGuard] },
+  
       { path: 'createList', component: CreateListComponent, canActivate: [AuthGuard] },
       { path: 'list-detail/:listName', component: ListMenuComponent, canActivate: [AuthGuard] },
       { path: 'friends', component: FriendListComponent, canActivate: [AuthGuard] },
     ])
   ],
-  declarations: [ChatBoxComponent, ListMenuComponent, CreateListComponent, FriendListComponent]
+  declarations: [ListMenuComponent, CreateListComponent, FriendListComponent]
 })
 export class ChatModule { }

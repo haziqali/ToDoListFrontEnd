@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { SocketService } from 'src/app/socket.service';
 
 @Component({
   selector: 'app-logout',
@@ -10,7 +11,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private appService: AppService, private toastr: ToastrService) { }
+  constructor(private appService: AppService, private toastr: ToastrService, private socketService: SocketService) { }
 
   ngOnInit() {
     localStorage.clear();
@@ -21,6 +22,7 @@ export class LogoutComponent implements OnInit {
         
           Cookie.deleteAll();
           Cookie.delete('io');
+          this.socketService.exitSocket()
         
       
 

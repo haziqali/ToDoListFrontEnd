@@ -9,30 +9,31 @@ import { Observable } from 'rxjs';
 export class TodoService {
 
   private url =  'http://localhost:3000/api/v1';
-  private toDoList = [];
-  private result = []
   private userInfo: any;
+  private result: any;
 
-  constructor(private http : HttpClient) { 
-  }
-
-  getUserInf() {
+  constructor(private http : HttpClient) {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    this.result = this.userInfo.friends.map(a => a.email);
-    this.result.push(this.userInfo.email);
+    let result = this.userInfo.friends.map(a => a.email);
+    result.push(this.userInfo.email);
+    localStorage.setItem("listAcessUsers", JSON.stringify(result));
+
   }
+
+  
 
   getToDoList() : Observable<any>{
-    this.getUserInf();
-    console.log(this.result)
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
+    
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('users', JSON.stringify(this.result));
+ 
   return this.http.post(`${this.url}/lists/view/all`,  params);
   }
 
   addToDoList(listItem) : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     console.log(listItem)
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
@@ -43,7 +44,7 @@ export class TodoService {
   }
 
   removeToDoList(listItem) : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
@@ -53,7 +54,7 @@ export class TodoService {
   }
 
   doneItemToDoList(listItem) : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
@@ -63,7 +64,7 @@ export class TodoService {
   }
 
   clearAll() : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     console.log(Cookie.get('listName'))
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
@@ -73,7 +74,7 @@ export class TodoService {
   }
 
   clearDoneItems() : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
@@ -82,7 +83,7 @@ export class TodoService {
   }
 
   clearActiveItems() : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
@@ -91,7 +92,7 @@ export class TodoService {
   }
 
   editListItem(oldValue, newValue) : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('name', Cookie.get('listName'))
@@ -102,8 +103,7 @@ export class TodoService {
   }
 
   getSingleToDoList(listName) : Observable<any>{
-    this.getUserInf();
-    
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('name', listName)
@@ -112,7 +112,7 @@ export class TodoService {
   }
 
   createList(listName) : Observable<any>{
-    this.getUserInf();
+    this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
     console.log(this.result)
     const params = new HttpParams()
       .set('authToken', Cookie.get('authtoken'))

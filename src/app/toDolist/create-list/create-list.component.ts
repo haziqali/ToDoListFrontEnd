@@ -23,17 +23,9 @@ export class CreateListComponent implements OnInit {
     .subscribe((apiResponse) => {
 
       if (apiResponse.status === 200) {
-        console.log(apiResponse.data)
+        console.log(apiResponse)
         this.todos = apiResponse.data;
-
-
-
-      } else {
-
-        this.toastr.error(apiResponse.message)
-      
-
-      }
+      } 
 
     }, (err) => {
       this.toastr.error('some error occured')

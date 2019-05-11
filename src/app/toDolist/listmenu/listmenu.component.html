@@ -17,13 +17,18 @@
                     <ul class="list-group" *ngFor="let item of todos.listItems; let i = index;">    
                         <li class="list-group-item clearfix">
                         <h5 class="header">
-                                <label *ngIf="item.edit"><input id="editText{{i}}" name="editText" type="text" value="{{item.text}}"></label>
-                            <label *ngIf="!item.edit">{{item.text}}</label>
+                                
+                                
+                                <label (click)="g()" *ngIf="item.edit"><input id="editText{{i}}" name="editText" type="text" value="{{item.text}}"></label>
+                                
+                                <label *ngIf="!item.edit">{{item.text}}</label>
                                 <span class="pull-right button-group ">
+                                    
                                     <button type="button" class="btn btn-warning" (click) = "itemDone(i)" data-toggle="tooltip" title="Mark as Done"><i class="fa fa-check" aria-hidden="true"></i></button>   
                                     <button type="button" class="btn btn-primary " (click) = "editList(i)" data-toggle="tooltip" title="Edit"><i class="fa fa-edit" aria-hidden="true"></i></button> 
                                     <button type="button" class="btn btn-danger" (click) = "deleteItem(i,item.text)" data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                 </span>
+                              
                             </h5>           
                         
             

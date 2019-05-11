@@ -15,22 +15,21 @@ import { NgForm } from '@angular/forms';
 })
 export class FriendListComponent implements OnInit {
 
-  public authToken: any;
-  public userInfo: any;
-  public receiverName: any;
-  public userList: any = [];
-  public disconnectedSocket: boolean;
-  public name: any;
+  private authToken: any;
+  private userInfo: any;
+  private receiverName: any;
+  private userList: any = [];
+  private disconnectedSocket: boolean;
+  private name: any;
+
   constructor(
-    public AppService: AppService,
-    public SocketService: SocketService,
-    public router: Router,
+    private AppService: AppService,
+    private SocketService: SocketService,
+    private router: Router,
     private toastr: ToastrService,
   ) {
 
   }
-
-
 
   ngOnInit() {
 
@@ -46,8 +45,6 @@ export class FriendListComponent implements OnInit {
     this.friendRequestSent();
 
     this.friendRequestAcceptedResp();
-
-    
 
 
 
@@ -125,6 +122,7 @@ public friendRequestAcceptedResp: any = () => {
     });
   }
 
+
 searchFriend(form: NgForm) {
   
   this.AppService.getSingleUser(this.name)
@@ -154,7 +152,6 @@ public verifyUserConfirmation: any = () => {
 
   this.SocketService.verifyUser()
     .subscribe((data) => {
-      console.log(3242)
       this.disconnectedSocket = false;
 
       this.SocketService.setUser(this.authToken);
@@ -162,7 +159,6 @@ public verifyUserConfirmation: any = () => {
 
     });
   }
-
 
     
 
@@ -178,16 +174,16 @@ public verifyUserConfirmation: any = () => {
 
     this.SocketService.onlineUserList()
       .subscribe((userList) => {
-        this.userList = [];
         for (let x in userList) {
-          let temp = { 'userId': x, 'name': userList[x] };
+       
+          let temp =  userList[x] ;
           this.userList.push(temp);          
-
+          console.log(this.userList);
         }
         
-        console.log(this.userList);
+        
 
       }); // end online-user-list
   }
-
+ 
   }
