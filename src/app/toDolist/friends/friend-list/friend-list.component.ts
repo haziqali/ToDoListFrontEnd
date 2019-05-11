@@ -11,7 +11,7 @@ import { NgForm } from '@angular/forms';
   selector: 'app-friend-list',
   templateUrl: './friend-list.component.html',
   styleUrls: ['./friend-list.component.css'],
-  providers: [SocketService]
+  providers: []
 })
 export class FriendListComponent implements OnInit {
 
@@ -47,6 +47,8 @@ export class FriendListComponent implements OnInit {
 
     this.friendRequestAcceptedResp();
 
+    
+
 
 
   }
@@ -55,7 +57,8 @@ export class FriendListComponent implements OnInit {
     this.AppService.getSingleUser(this.AppService.getUserInfoFromLocalstorage().email)
     .subscribe((apiResponse) => {
       if (apiResponse.status === 200) {
-        console.log(apiResponse);
+        console.log(apiResponse.data)
+        this.AppService.setUserInfoInLocalStorage(apiResponse.data)
         this.userInfo = apiResponse.data;
       } else {
         this.toastr.error(apiResponse.message)
@@ -98,6 +101,7 @@ sendFriendRequest() {
     }
     console.log(data);
     this.SocketService.friendRequestAccepted(data);
+    this.getUserInfo();
   }
 
   public friendRequestSent: any = () => {
@@ -109,16 +113,17 @@ sendFriendRequest() {
 
       });
     }
+   
 
+public friendRequestAcceptedResp: any = () => {
 
-    public friendRequestAcceptedResp: any = () => {
-
-      this.SocketService.friendRequestAcceptedResponse()
-        .subscribe((msg) => {
-          this.toastr.success(msg);
-          this.getUserInfo();
-        });
-      }
+  this.SocketService.friendRequestAcceptedResponse()
+    .subscribe((msg) => {
+      this.toastr.success(msg);
+      this.getUserInfo();
+      this.AppService.setUserInfoInLocalStorage(this.userInfo)
+    });
+  }
 
 searchFriend(form: NgForm) {
   
@@ -149,7 +154,7 @@ public verifyUserConfirmation: any = () => {
 
   this.SocketService.verifyUser()
     .subscribe((data) => {
-
+      console.log(3242)
       this.disconnectedSocket = false;
 
       this.SocketService.setUser(this.authToken);
@@ -159,23 +164,23 @@ public verifyUserConfirmation: any = () => {
   }
 
 
-  
+    
 
-    public newUserOnline: any = () => {
-      this.SocketService.newUserOnline()
-        .subscribe((data) => {
-          this.toastr.success(data);
-          console.log(data);
-        })
-    }
+  public newUserOnline: any = () => {
+    this.SocketService.newUserOnline()
+      .subscribe((data) => {
+        this.toastr.success(data);
+        console.log(data);
+      })
+  }
   
-  public getOnlineUserList :any =()=>{
+  public getOnlineUserList: any =()=>{
 
     this.SocketService.onlineUserList()
       .subscribe((userList) => {
         this.userList = [];
         for (let x in userList) {
-          let temp = { 'userId': x, 'name': userList[x], 'unread': 0, 'chatting': false };
+          let temp = { 'userId': x, 'name': userList[x] };
           this.userList.push(temp);          
 
         }

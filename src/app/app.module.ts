@@ -14,6 +14,7 @@ import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AuthGuard } from './guards/auth.guard';
 import { TodoService } from './todo.service';
+import { SocketService } from './socket.service';
 
 
 
@@ -37,7 +38,7 @@ import { TodoService } from './todo.service';
       { path: '**', component: LoginComponent }
     ])
   ],
-  providers: [AppService, AuthGuard, TodoService],
+  providers: [AppService, AuthGuard, TodoService, SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

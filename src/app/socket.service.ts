@@ -12,6 +12,7 @@ import 'rxjs/add/operator/toPromise';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { AppService } from './app.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class SocketService {
@@ -25,102 +26,65 @@ export class SocketService {
     // connection is being created.
     // that handshake
     this.socket = io(this.url);
-
+    
   }
-
-  // events to be listened 
+  
   
   public verifyUser = () => {
-
     return Observable.create((observer) => {
-
       this.socket.on('verifyUser', (data) => {
-
         observer.next(data);
-
       }); // end Socket
-
     }); // end Observable
-
   } // end verifyUser
 
   public onlineUserList = () => {
-
     return Observable.create((observer) => {
-
       this.socket.on("online-user-list", (userList) => {
-
         observer.next(userList);
-
       }); // end Socket
-
     }); // end Observable
-
   } // end onlineUserList
 
 
   public newUserOnline = () => {
-
     return Observable.create((observer) => {
-
       this.socket.on("new-user-online", (message) => {
-
         observer.next(message);
-
       });
-
     });
-
   }
 
   public friendRequestSent = () => {
-
     return Observable.create((observer) => {
       this.socket.on(`${this.appService.getUserInfoFromLocalstorage().email}-friend-request-sent`, (message) => {
         observer.next(message);
-
       });
-
     });
-
   }
 
   public friendRequestAcceptedResponse = () => {
-
     return Observable.create((observer) => {
       this.socket.on(`${this.appService.getUserInfoFromLocalstorage().email}-friend-request-accepted-db`, (message) => {
         observer.next(message);
-
       });
-
     });
-
   }
 
 
-  public disconnectedSocket = (data) => {
-
+  public disconnectedSocket = () => {
     return Observable.create((observer) => {
-
-      this.socket.on(`${data.senderMail}-friend-request-sent`, (message) => {
-
+      this.socket.on("new-user-online", (message) => {
         observer.next(message);
-
       }); // end Socket
-
     }); // end Observable
-
-
-
   } // end disconnectSocket
-
   // end events to be listened
-
   // events to be emitted
 
   public setUser = (authToken) => {
+    console.log(authToken)
     this.socket.emit("set-user", authToken);
-
   } // end setUser
 
   // events to be emitted
@@ -128,6 +92,68 @@ export class SocketService {
     this.socket.emit("friend-request", data, authToken);
 
   }
+
+  public addListItem = (data) => {
+    this.socket.emit("add-list-item", data);
+
+  }
+  
+  public listItemAdded = () => {
+    return Observable.create((observer) => {
+      this.socket.on("list-item-added", (message) => {
+        observer.next(message);
+      }); 
+    }); // end Observable
+  }
+
+  public deleteListItem = (data) => {
+    this.socket.emit("delete-list-item", data);
+
+  }
+  public listItemDeleted = () => {
+    return Observable.create((observer) => {
+      this.socket.on("list-item-deleted", (message) => {
+        observer.next(message);
+      }); 
+    }); // end Observable
+  }
+
+  public editListItem = (data) => {
+    this.socket.emit("edit-list-item", data);
+
+  }
+  public listItemedited = () => {
+    return Observable.create((observer) => {
+      this.socket.on("list-item-edited", (message) => {
+        observer.next(message);
+      }); 
+    }); // end Observable
+  }
+
+  public doneListItem = (data) => {
+    this.socket.emit("done-list-item", data);
+
+  }
+  public listItemCompleted = () => {
+    return Observable.create((observer) => {
+      this.socket.on("list-item-completed", (message) => {
+        observer.next(message);
+      }); 
+    }); // end Observable
+  }
+
+  public clearListItem = (data) => {
+    this.socket.emit("clear-list-item", data);
+
+  }
+  public listItemCleared = () => {
+    return Observable.create((observer) => {
+      this.socket.on("list-item-cleared", (message) => {
+        observer.next(message);
+      }); 
+    }); // end Observable
+  }
+ 
 
   public friendRequestAccepted = (data) => {
     this.socket.emit("friend-request-accepted", data);

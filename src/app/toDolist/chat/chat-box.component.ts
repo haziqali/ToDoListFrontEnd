@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-chat-box',
   templateUrl: './chat-box.component.html',
   styleUrls: ['./chat-box.component.css'],
-  providers: [SocketService]
+
 })
 
 export class ChatBoxComponent implements OnInit {

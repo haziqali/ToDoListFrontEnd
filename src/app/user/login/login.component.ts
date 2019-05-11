@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
            
              this.appService.setUserInfoInLocalStorage(apiResponse.data.userDetails)
             
-             this.router.navigate(['/createList']);
+             this.router.navigate(['/friends']);
 
           } else {
 

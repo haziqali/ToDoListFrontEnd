@@ -3,6 +3,7 @@ import { TodoService } from 'src/app/todo.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { SocketService } from 'src/app/socket.service';
 
 
 @Component({
@@ -18,13 +19,53 @@ export class ListMenuComponent implements OnInit {
   todoObj: any;
   editable: boolean = false;
 
-  constructor(private todoService: TodoService, private route: ActivatedRoute, private toastr: ToastrService) {
+  constructor(private todoService: TodoService, private route: ActivatedRoute, private toastr: ToastrService, private socketService: SocketService) {
   }
 
   ngOnInit(): void {
     this.getSingleToDoList();
+    this.listItemAdded();
+    this.listItemDeleted();
+    this.listItemEdited();
+    this.listItemCompleted();
+    this.listItemCleared();
 }
 
+public listItemAdded: any = () => {
+  this.socketService.listItemAdded()
+    .subscribe((msg) => {
+      this.toastr.success(msg);
+      this.getSingleToDoList();
+    });
+  }
+  public listItemDeleted: any = () => {
+    this.socketService.listItemDeleted()
+      .subscribe((msg) => {
+        this.toastr.success(msg);
+        this.getSingleToDoList();
+      });
+    }
+    public listItemEdited: any = () => {
+      this.socketService.listItemedited()
+        .subscribe((msg) => {
+          this.toastr.success(msg);
+          this.getSingleToDoList();
+        });
+      }
+      public listItemCompleted: any = () => {
+        this.socketService.listItemCompleted()
+          .subscribe((msg) => {
+            this.toastr.success(msg);
+            this.getSingleToDoList();
+          });
+        }
+        public listItemCleared: any = () => {
+          this.socketService.listItemCleared()
+            .subscribe((msg) => {
+              this.toastr.success(msg);
+              this.getSingleToDoList();
+            });
+          }
  
 getSingleToDoList() {
   this.todos =  this.todoService.getSingleToDoList(this.route.snapshot.params["listName"])
@@ -46,7 +87,13 @@ getSingleToDoList() {
 clearAll() {
   this.todoService.clearAll()
   .subscribe((apiResponse) => {
+    console.log(apiResponse)
     if (apiResponse.status === 200) {
+      let data = {
+        senderName: Cookie.get('receiverName'),
+        listName: this.todos.name
+      }
+      this.socketService.clearListItem(data);
       this.getSingleToDoList();
     } else {
 
@@ -61,6 +108,11 @@ clearActiveItems() {
   this.todoService.clearActiveItems()
   .subscribe((apiResponse) => {
     if (apiResponse.status === 200) {
+      let data = {
+        senderName: Cookie.get('receiverName'),
+        listName: this.todos.name
+      }
+      this.socketService.clearListItem(data);
       this.getSingleToDoList();
     } else {
 
@@ -75,6 +127,11 @@ clearDoneItems() {
   this.todoService.clearDoneItems()
   .subscribe((apiResponse) => {
     if (apiResponse.status === 200) {
+      let data = {
+        senderName: Cookie.get('receiverName'),
+        listName: this.todos.name
+      }
+      this.socketService.clearListItem(data);
       this.getSingleToDoList();
     } else {
 
@@ -93,6 +150,12 @@ addtoList(value) {
     if (apiResponse.status === 200) {
       this.toastr.success(apiResponse.message)
       this.todos.listItems.push( {text:value, edit: false});
+      let data = {
+        listItem: value,
+        senderName: Cookie.get('receiverName'),
+        listName: this.todos.name
+      }
+      this.socketService.addListItem(data);
     } else {
 
       this.toastr.error(apiResponse.message)
@@ -107,6 +170,12 @@ itemDone(index) {
   this.todoService.doneItemToDoList(value)
   .subscribe((apiResponse) => {
     if (apiResponse.status === 200) {
+      let data = {
+        listItem: value,
+        senderName: Cookie.get('receiverName'),
+        listName: this.todos.name
+      }
+      this.socketService.doneListItem(data);
       this.toastr.success(apiResponse.message);
       this.getSingleToDoList();
     } else {
@@ -134,6 +203,13 @@ editList(index) {
     .subscribe((apiResponse) => {
       console.log(apiResponse)
       if (apiResponse.status === 200) {
+        let data = {
+          listItem: oldValue,
+          newListItem: newValue,
+          senderName: Cookie.get('receiverName'),
+          listName: this.todos.name
+        }
+        this.socketService.editListItem(data);
        this.getSingleToDoList();
         this.toastr.success(apiResponse.message);  
       } else {
@@ -149,9 +225,15 @@ editList(index) {
     this.todoService.removeToDoList(listItem)
     .subscribe((apiResponse) => {
       if (apiResponse.status === 200) {
-        console.log(apiResponse);
+
         this.toastr.success(apiResponse.message);
+        let data = {
+          listItem: listItem,
+          senderName: Cookie.get('receiverName'),
+          listName: this.todos.name
+        }
         this.todos.listItems.splice(index, 1);
+        this.socketService.deleteListItem(data);
       } else {
   
         this.toastr.error(apiResponse.message)

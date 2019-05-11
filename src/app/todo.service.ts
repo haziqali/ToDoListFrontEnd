@@ -10,98 +10,116 @@ export class TodoService {
 
   private url =  'http://localhost:3000/api/v1';
   private toDoList = [];
-  constructor(private http : HttpClient) { }
+  private result = []
+  private userInfo: any;
+
+  constructor(private http : HttpClient) { 
+  }
+
+  getUserInf() {
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.result = this.userInfo.friends.map(a => a.email);
+    this.result.push(this.userInfo.email);
+  }
 
   getToDoList() : Observable<any>{
+    this.getUserInf();
+    console.log(this.result)
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
-  return this.http.get(`${this.url}/lists/view/all`, {params: params});
+    .set('users', JSON.stringify(this.result));
+  return this.http.post(`${this.url}/lists/view/all`,  params);
   }
 
   addToDoList(listItem) : Observable<any>{
+    this.getUserInf();
+    console.log(listItem)
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
-    .set('listItems', listItem)
+    .set('listItems',listItem)
+    .set('user', this.userInfo.email );
   return this.http.post(`${this.url}/lists/addItem`, params);
   }
 
   removeToDoList(listItem) : Observable<any>{
+    this.getUserInf();
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
     .set('listItems', listItem)
+    .set('user', this.userInfo.email );
   return this.http.post(`${this.url}/lists/deleteItem`, params);
   }
 
   doneItemToDoList(listItem) : Observable<any>{
+    this.getUserInf();
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
     .set('listItems', listItem)
+    .set('user', this.userInfo.email );
   return this.http.post(`${this.url}/lists/doneItem`, params);
   }
 
   clearAll() : Observable<any>{
+    this.getUserInf();
+    console.log(Cookie.get('listName'))
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
+    .set('user', this.userInfo.email );
   return this.http.post(`${this.url}/lists/clearAll`, params);
   }
 
   clearDoneItems() : Observable<any>{
+    this.getUserInf();
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
+    .set('user', this.userInfo.email );
   return this.http.post(`${this.url}/lists/clearDoneItems`, params);
   }
 
   clearActiveItems() : Observable<any>{
+    this.getUserInf();
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
+    .set('user', this.userInfo.email );
   return this.http.post(`${this.url}/lists/clearActiveItems`, params);
   }
 
   editListItem(oldValue, newValue) : Observable<any>{
+    this.getUserInf();
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
-    .set('listName', Cookie.get('listName'))
+    .set('name', Cookie.get('listName'))
     .set('oldValue', oldValue)
     .set('newValue', newValue)
+    .set('user', this.userInfo.email );
   return this.http.post(`${this.url}/lists/editItem`, params);
   }
 
   getSingleToDoList(listName) : Observable<any>{
+    this.getUserInf();
+    
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('name', listName)
-  return this.http.get(`${this.url}/lists/${listName}`, {params: params});
+    .set('users', JSON.stringify(this.result) )
+  return this.http.post(`${this.url}/lists/${listName}`, params);
   }
 
   createList(listName) : Observable<any>{
+    this.getUserInf();
+    console.log(this.result)
     const params = new HttpParams()
       .set('authToken', Cookie.get('authtoken'))
-      .set('name', listName);
-    console.log(params);
+      .set('name', listName)
+      .set('users', JSON.stringify(this.result));
   return this.http.post(`${this.url}/lists/createList`, params);
-  }
-
-
-  addTitle(title: string) {
-    this.toDoList.push({
-      title: title,
-      isChecked: false
-    });
-  }
-
-  checkOrUnCheckTitle($key: string, flag: boolean) {
-    //this.toDoList.update($key, { isChecked: flag });
-  }
-
-  removeTitle($key: string) {
-   // this.toDoList.remove($key);
-  }
+  } 
 
 }
 
