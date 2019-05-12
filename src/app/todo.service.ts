@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class TodoService {
 
-  private url =  'http://localhost:3000/api/v1';
+  private url =  'http://apidailytaskexecutor.tk/api/v1';
   private userInfo: any;
   private result: any;
 

@@ -14,12 +14,12 @@ import { SocketService } from 'src/app/socket.service';
 })
 export class ListMenuComponent implements OnInit {
   
-  private newTodo: any[] = [];
-  private todos: any;
-  private todoObj: any;
-  private editable: boolean = false;
-  private result: any;
-  private user: any;
+  public newTodo: any[] = [];
+  public todos: any;
+  public todoObj: any;
+  public editable: boolean = false;
+  public result: any;
+  public user: any;
 
   constructor(private todoService: TodoService, private route: ActivatedRoute, private toastr: ToastrService, private socketService: SocketService) {
   }

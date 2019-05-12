@@ -13,8 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
 
   
-  private email: any;
-  private password: any;
+  public email: any;
+  public password: any;
 
   constructor(
     private appService: AppService,

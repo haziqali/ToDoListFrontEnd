@@ -15,12 +15,12 @@ import { NgForm } from '@angular/forms';
 })
 export class FriendListComponent implements OnInit {
 
-  private authToken: any;
-  private userInfo: any;
-  private receiverName: any;
-  private userList: any = [];
-  private disconnectedSocket: boolean;
-  private name: any;
+  public authToken: any;
+  public userInfo: any;
+  public receiverName: any;
+  public userList: any = [];
+  public disconnectedSocket: boolean;
+  public name: any;
 
   constructor(
     private AppService: AppService,

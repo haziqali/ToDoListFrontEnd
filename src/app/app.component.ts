@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
  
   title = 'app';
-  private showHead: any;
+  public showHead: any;
 
   constructor(
     

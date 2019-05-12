@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable()
 export class SocketService {
 
-  private url = 'http://localhost:3000';
+  private url = 'http://apidailytaskexecutor.tk';
 
   private socket;
 

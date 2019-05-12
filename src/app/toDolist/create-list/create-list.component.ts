@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./create-list.component.css']
 })
 export class CreateListComponent implements OnInit {
-  private todos: any;
+  public todos: any;
 
   constructor(private toDoService : TodoService,
               private toastr: ToastrService   

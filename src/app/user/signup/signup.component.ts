@@ -13,14 +13,15 @@ import * as phoneJson from 'src/assets/phone.json';
 })
 export class SignupComponent implements OnInit {
 
-  private firstName: any;
-  private lastName: any;
-  private mobile: any;
-  private email: any;
-  private password: any;
-  private countries: any;
-  private phones: any
-  private countrySelectedCode: any
+  public firstName: any;
+  public lastName: any;
+  public mobile: any;
+  public email: any;
+  public password: any;
+  public countries: any;
+  public phones: any
+  public countrySelectedCode: any
+  public countrySelected: any
 
   constructor(  
     private appService: AppService,

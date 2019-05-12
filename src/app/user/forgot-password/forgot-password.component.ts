@@ -9,7 +9,7 @@ import { AppService } from 'src/app/app.service';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  private email : String;
+  public email : String;
 
   constructor(private toastr: ToastrService, private appService: AppService) { }
 

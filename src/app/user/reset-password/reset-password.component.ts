@@ -13,8 +13,8 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
   }
 
-  private password : String;
-  private confirmPassword : String;
+  public password : String;
+  public confirmPassword : String;
 
 
   constructor(private activatedRoute : ActivatedRoute, 
