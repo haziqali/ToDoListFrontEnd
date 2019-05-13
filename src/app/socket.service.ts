@@ -76,9 +76,9 @@ export class SocketService {
 
     return Observable.create((observer) => {
 
-      this.socket.on("disconnect", () => {
+      this.socket.on("user-offline", (message) => {
 
-        observer.next();
+        observer.next(message);
 
       }); // end Socket
 
@@ -93,7 +93,6 @@ export class SocketService {
   }
 
   public setUser = (authToken) => {
-    console.log(authToken)
     this.socket.emit("set-user", authToken);
   } // end setUser
 

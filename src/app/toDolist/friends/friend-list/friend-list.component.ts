@@ -32,11 +32,11 @@ export class FriendListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.verifyUserConfirmation();
 
     this.authToken = Cookie.get("authtoken");
+
     this.getUserInfo();
-  
-    this.verifyUserConfirmation();
 
     this.getOnlineUserList();
 
@@ -46,9 +46,22 @@ export class FriendListComponent implements OnInit {
 
     this.friendRequestAcceptedResp();
 
+    this.userOffline();
+
 
 
   }
+  public verifyUserConfirmation: any = () => {
+
+    this.SocketService.verifyUser()
+      .subscribe((data) => {
+        this.disconnectedSocket = false;
+  
+        this.SocketService.setUser(this.authToken);
+        this.getOnlineUserList();
+  
+      });
+    }
 
   getUserInfo() {
     this.AppService.getSingleUser(this.AppService.getUserInfoFromLocalstorage().email)
@@ -148,17 +161,7 @@ searchFriend(form: NgForm) {
 } // end condition
 
 
-public verifyUserConfirmation: any = () => {
 
-  this.SocketService.verifyUser()
-    .subscribe((data) => {
-      this.disconnectedSocket = false;
-
-      this.SocketService.setUser(this.authToken);
-      this.getOnlineUserList();
-
-    });
-  }
 
     
 
@@ -171,19 +174,23 @@ public verifyUserConfirmation: any = () => {
   }
   
   public getOnlineUserList: any =()=>{
-
     this.SocketService.onlineUserList()
       .subscribe((userList) => {
-        for (let x in userList) {
-       
-          let temp =  userList[x] ;
-          this.userList.push(temp);          
+        this.userList = userList;         
           console.log(this.userList);
-        }
+      })
+    }
+
+  public userOffline: any =()=>{
+    this.SocketService.disconnectedSocket()
+      .subscribe((message) => {
+        this.toastr.error(message);
+        })
+    }
+}
         
         
 
-      }); // end online-user-list
-  }
+       // end online-user-list
+  
  
-  }

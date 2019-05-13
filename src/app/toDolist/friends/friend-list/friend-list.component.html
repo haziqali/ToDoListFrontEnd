@@ -59,11 +59,11 @@
                  
                  <div class="list-content" mt-5 *ngIf="userInfo && userInfo.friendRequests && userInfo.friendRequests.length!=0">
                   <ul class="list-group">
-                    <li href="#" class="list-group-item title">
-                      Friend Requests
+                    <li href="#" class="list-group-item title text-center">
+                      <h3>Friend Requests</h3>
                     </li>
                     
-                    <li class="list-group-item text-left mt-4" *ngFor="let userInfo of userInfo.friendRequests">   
+                    <li class="list-group-item text-left mt-4" style="background-color: lightgoldenrodyellow" *ngFor="let userInfo of userInfo.friendRequests">   
                       <label class="name">
                         <h4>{{userInfo.firstName}} {{userInfo.lastName}}</h4> 
                        </label><br>
@@ -82,13 +82,13 @@
 
                 <hr/>
                  
-                <div class="list-content" mt-5 *ngIf="userInfo && userInfo.friends">
-                 <ul class="list-group">
-                   <li href="#" class="list-group-item title">
-                     Friends
+                <div class="list-content"  mt-5 *ngIf="userInfo && userInfo.friends">
+                 <ul class="list-group" >
+                   <li href="#" class="list-group-item title text-center">
+                    <h3> Friends </h3>
                    </li>
                    
-                   <li class="list-group-item text-left mt-4" *ngFor="let userInfo of userInfo.friends">   
+                   <li class="list-group-item text-left mt-4" style="background-color: lightgoldenrodyellow" *ngFor="let userInfo of userInfo.friends">   
                      <label class="name">
                        <h4>{{userInfo.firstName}} {{userInfo.lastName}}</h4> 
                       </label><br>
@@ -104,5 +104,31 @@
 
                
                <hr/>
+
+
+
+               <div class="list-content" mt-5 *ngIf="userList">
+                <ul class="list-group">
+                  <li href="#" class="list-group-item title text-center">
+                    <h3>All Online Users</h3>
+                  </li>
+                  
+                  <li class="list-group-item text-left mt-4" style="background-color: lightgoldenrodyellow" *ngFor="let userInfo of userList">   
+                    <i class="online"></i>
+                    <label class="name ml-3">
+                     <h4>{{userInfo.fullName}}</h4> 
+                     </label><br>
+                     <label class="email ml-3">
+                         <h5>{{userInfo.email}}</h5> 
+                        </label>
+                    
+                   
+                  </li>
+                 
+                </ul>
+              </div>
+
+
+               
                  
               
