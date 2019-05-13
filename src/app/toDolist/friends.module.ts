@@ -26,4 +26,4 @@ import { FriendListComponent } from './friends/friend-list/friend-list.component
   ],
   declarations: [ListMenuComponent, CreateListComponent, FriendListComponent]
 })
-export class ChatModule { }
+export class FriendsModule { }

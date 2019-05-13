@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 //routing 
 import { RouterModule, Routes } from '@angular/router';
 import { UserModule } from './user/user.module';
-import { ChatModule } from './toDolist/chat.module';
+import { FriendsModule } from './toDolist/friends.module';
 import { LoginComponent } from './user/login/login.component';
 import { AppService } from './app.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,7 +28,7 @@ import { SocketService } from './socket.service';
     BrowserModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    ChatModule,
+    FriendsModule,
     UserModule,
     HttpClientModule,
     RouterModule.forRoot([
