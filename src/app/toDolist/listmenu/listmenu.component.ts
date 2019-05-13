@@ -42,9 +42,7 @@ checkListPermission() {
   }
   return false;
 }
-g() {
-  console.log(1)
-}
+
 public listItemAdded: any = () => {
   
   if(this.checkListPermission()) {
@@ -99,7 +97,6 @@ getSingleToDoList() {
   this.todos =  this.todoService.getSingleToDoList(this.route.snapshot.params["listName"])
   .subscribe((apiResponse) => {
     if (apiResponse.status === 200) {
-      console.log(apiResponse)
       this.todos = apiResponse.data;
       this.newTodo = this.todos.doneListItems;
       Cookie.set("listName", this.todos.name);
@@ -115,7 +112,6 @@ getSingleToDoList() {
 clearAll() {
   this.todoService.clearAll()
   .subscribe((apiResponse) => {
-    console.log(apiResponse)
     if (apiResponse.status === 200) {
       let data = {
         senderName: Cookie.get('receiverName'),
@@ -224,11 +220,8 @@ editList(index) {
   else{
     const oldValue= this.todos.listItems[index].text;
     const newValue = (<HTMLInputElement>document.getElementById("editText"+index)).value;
-    console.log(newValue);
-    console.log(oldValue);
     this.todoService.editListItem(oldValue, newValue)
     .subscribe((apiResponse) => {
-      console.log(apiResponse)
       if (apiResponse.status === 200) {
         let data = {
           listItem: oldValue,

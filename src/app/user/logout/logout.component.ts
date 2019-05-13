@@ -17,11 +17,8 @@ export class LogoutComponent implements OnInit {
     localStorage.clear();
     this.appService.logout()
     .subscribe((apiResponse) => {
-      if (apiResponse.status === 200) {
-        console.log(apiResponse)
-        
+      if (apiResponse.status === 200) { 
           Cookie.deleteAll();
-          Cookie.delete('io');
           this.socketService.exitSocket()
         
       

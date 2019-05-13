@@ -23,7 +23,6 @@ export class CreateListComponent implements OnInit {
     .subscribe((apiResponse) => {
 
       if (apiResponse.status === 200) {
-        console.log(apiResponse)
         this.todos = apiResponse.data;
       } 
 
@@ -35,7 +34,6 @@ export class CreateListComponent implements OnInit {
 } // end condition
 
 createList(newListName): void {
-  console.log(newListName);
   this.toDoService.createList(newListName)
   .subscribe((apiResponse) => {
 

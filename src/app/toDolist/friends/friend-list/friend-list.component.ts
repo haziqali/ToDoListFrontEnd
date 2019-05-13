@@ -67,7 +67,6 @@ export class FriendListComponent implements OnInit {
     this.AppService.getSingleUser(this.AppService.getUserInfoFromLocalstorage().email)
     .subscribe((apiResponse) => {
       if (apiResponse.status === 200) {
-        console.log(apiResponse.data)
         this.AppService.setUserInfoInLocalStorage(apiResponse.data)
         this.userInfo = apiResponse.data;
       } else {
@@ -109,7 +108,6 @@ sendFriendRequest() {
       receiverLastname: reciever.lastName,
 
     }
-    console.log(data);
     this.SocketService.friendRequestAccepted(data);
     this.getUserInfo();
   }
@@ -142,7 +140,6 @@ searchFriend(form: NgForm) {
   .subscribe((apiResponse) => {
 
     if (apiResponse.status === 200) {
-      console.log(apiResponse.data);
       if(apiResponse.data.email!==this.userInfo.email) {
       this.receiverName = apiResponse.data;
       }
@@ -169,7 +166,6 @@ searchFriend(form: NgForm) {
     this.SocketService.newUserOnline()
       .subscribe((data) => {
         this.toastr.success(data);
-        console.log(data);
       })
   }
   
@@ -177,7 +173,6 @@ searchFriend(form: NgForm) {
     this.SocketService.onlineUserList()
       .subscribe((userList) => {
         this.userList = userList;         
-          console.log(this.userList);
       })
     }
 

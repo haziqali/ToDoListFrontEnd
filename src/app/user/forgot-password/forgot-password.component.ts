@@ -28,7 +28,6 @@ export class ForgotPasswordComponent implements OnInit {
     this.appService.forgotPassword(data)
     .subscribe((apiResponse) => {
       if (apiResponse.status === 200) {
-        console.log(apiResponse);
         this.toastr.success(apiResponse.message);
       } else {
         this.toastr.error(apiResponse.message);

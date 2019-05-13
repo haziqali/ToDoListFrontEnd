@@ -78,12 +78,8 @@ export class SignupComponent implements OnInit {
         password: this.password,
       }
 
-      console.log(data);
-
       this.appService.signupFunction(data)
         .subscribe((apiResponse) => {
-
-          console.log(apiResponse);
 
           if (apiResponse.status === 200) {
 

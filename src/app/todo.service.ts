@@ -34,7 +34,6 @@ export class TodoService {
 
   addToDoList(listItem) : Observable<any>{
     this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
-    console.log(listItem)
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
@@ -65,7 +64,6 @@ export class TodoService {
 
   clearAll() : Observable<any>{
     this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
-    console.log(Cookie.get('listName'))
     const params = new HttpParams()
     .set('authToken', Cookie.get('authtoken'))
     .set('listName', Cookie.get('listName'))
@@ -113,7 +111,6 @@ export class TodoService {
 
   createList(listName) : Observable<any>{
     this.result = JSON.parse(localStorage.getItem("listAcessUsers"));
-    console.log(this.result)
     const params = new HttpParams()
       .set('authToken', Cookie.get('authtoken'))
       .set('name', listName)
