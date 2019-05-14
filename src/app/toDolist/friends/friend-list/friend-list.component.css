@@ -1,22 +1,14 @@
-.list-content{
-    min-height:300px;
-   }
+
    .list-content .list-group .title{
      background:darkslategrey;
      border:2px solid #DDDDDD;
      font-weight:bold;
      color:#FFFFFF;
    }
-   .list-group-item img {
-       height:80px; 
-       width:80px;
-   }
+   
    
 
-   .break{
-       width:100%;
-       margin:20px;
-   }
+  
 
    .online{
 

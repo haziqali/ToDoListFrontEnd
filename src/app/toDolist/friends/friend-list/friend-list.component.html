@@ -2,24 +2,15 @@
   <br/>
 <div class="row justify-content-center">
                       <div class="col-12 col-md-10 col-lg-8">
-                          <h3 class="text-center mb-3">Search for a friend</h3>
-                          <form #myForm="ngForm" class="card card-sm" >
-                              <div class="card-body row no-gutters align-items-center">
-                                  <div class="col-auto">
-                                    <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-                                  </div>
-                                  <!--end of col-->
-                                  <div class="col">
-                                      <input name="email" #email="ngModel"  required
-                                      pattern="[^ @]*@[^ @]*" [(ngModel)]="name" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Enter email id">
-                                  </div>
-                                  <!--end of col-->
-                                  <div class="col-auto">
-                                      <button [disabled] = "myForm.invalid"  type="submit" class="btn btn-lg btn-success" (click)="searchFriend(myForm)">Search</button>
-                                  </div>
+                          <h3 class="text-center mb-3 mx-auto">Search for a friend</h3>
+                          <form #myForm="ngForm" class=" mb-3" >
+                              <div class=" mx-auto">
+                                  
+                                  <app-friend-search (userSelected) = searchFriend(myForm,$event)></app-friend-search>
+                                  
                                   <!--end of col-->
                               </div>
-                              <div style="color:red" *ngIf="myForm.invalid && (myForm.touched)">Please enter a valid email id</div>
+                            
                           </form>
                       </div>
                       

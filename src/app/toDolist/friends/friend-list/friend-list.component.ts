@@ -134,9 +134,9 @@ public friendRequestAcceptedResp: any = () => {
   }
 
 
-searchFriend(form: NgForm) {
-  
-  this.AppService.getSingleUser(this.name)
+searchFriend(form: NgForm, username : any) {
+  console.log(username)
+  this.AppService.getSingleUser(username)
   .subscribe((apiResponse) => {
 
     if (apiResponse.status === 200) {

@@ -8,6 +8,7 @@ import { ListMenuComponent } from './listmenu/listmenu.component';
 import { FormsModule } from '@angular/forms';
 import { CreateListComponent } from './create-list/create-list.component';
 import { FriendListComponent } from './friends/friend-list/friend-list.component';
+import { FriendSearchComponent } from './friends/friend-search/friend-search.component';
 
 
 
@@ -24,6 +25,6 @@ import { FriendListComponent } from './friends/friend-list/friend-list.component
       { path: 'friends', component: FriendListComponent, canActivate: [AuthGuard] },
     ])
   ],
-  declarations: [ListMenuComponent, CreateListComponent, FriendListComponent]
+  declarations: [ListMenuComponent, CreateListComponent, FriendListComponent, FriendSearchComponent]
 })
 export class FriendsModule { }

@@ -1,0 +1,14 @@
+
+
+<div id="search-component">
+    <input #searchBox id="search-box" (input)="search(searchBox.value)" required
+     class="form-control form-control-lg form-control-borderless" type="search" placeholder="Enter email id">
+ 
+  <ul class="search-result">
+    <li *ngFor="let hero of friends$ | async" >
+  
+        <a (click) = "getUser(hero.email)">{{hero.email}}</a>
+      
+    </li>
+  </ul>
+</div>

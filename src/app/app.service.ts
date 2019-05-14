@@ -1,5 +1,5 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, ObservableInput } from 'rxjs';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 import 'rxjs/add/operator/catch';
@@ -23,7 +23,13 @@ export class AppService {
 
   } // end constructor  
 
-
+  searchFriends(term: string): Observable<any> {
+    const params = new HttpParams()
+    .set('authToken', Cookie.get('authtoken'))
+    .set('term', term);
+    return this.http.post(`${this.url}/api/v1/users/findUsers`, params);
+  }
+  
   public getUserInfoFromLocalstorage = () => {
 
     return JSON.parse(localStorage.getItem('userInfo'));
