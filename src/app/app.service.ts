@@ -13,7 +13,7 @@ import { HttpErrorResponse, HttpParams } from "@angular/common/http";
 @Injectable()
 export class AppService {
 
-  private url =  'http://apidailytaskexecutor.tk';
+  private url =  'http://api.thedailytaskexecutor.tk';
 
   constructor(
     public http: HttpClient
